@@ -34,6 +34,13 @@
 # Открытие конфигурационного файла SSH для редактирования
     nano /etc/ssh/sshd_config
 
+
+# Заменить порт
+
+Port 22102
+
+    sudo ufw allow 22102/tcp
+
 # (Найдите строку "PermitRootLogin yes" и замените её на "PermitRootLogin no"), (При необходимости измените "PasswordAuthentication yes" на "PasswordAuthentication no")
 
 # Перезапуск службы SSH для применения изменений
