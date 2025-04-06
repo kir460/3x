@@ -41,6 +41,10 @@ Port 22102
 
     sudo ufw allow 22102/tcp
 
+# Закрыть порт
+
+    sudo ufw deny 22/tcp
+
 # (Найдите строку "PermitRootLogin yes" и замените её на "PermitRootLogin no"), (При необходимости измените "PasswordAuthentication yes" на "PasswordAuthentication no")
 
 # Перезапуск службы SSH для применения изменений
