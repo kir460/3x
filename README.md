@@ -85,6 +85,24 @@ Port 22102
 # Предоставление прав на выполнение скрипта
     chmod +x ui.sh
 
-# Запуск скрипта от имени суперпользователя
-    sudo ./ui.sh
+
+
+# Подробнее
+
+<details>
+<summary>Показать/скрыть</summary>
+
+# Обновление
+    x-ui
+    2
+
+# Восстановление доступа
+    x-ui
+    10
+
+# Подписка
+![image](https://github.com/user-attachments/assets/5cbe56b6-9496-47c5-aadf-6c09d034117d)
+
+
+
 </details>
