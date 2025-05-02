@@ -102,6 +102,8 @@ Port 22102
 
 # Подписка
 ![image](https://github.com/user-attachments/assets/5cbe56b6-9496-47c5-aadf-6c09d034117d)
+![image](https://github.com/user-attachments/assets/29a49e4f-dcc9-40b1-b0df-1776d9ca39ee)
+
 
 
 
