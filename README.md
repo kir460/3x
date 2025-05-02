@@ -36,6 +36,7 @@ Port 22102
 
 Найдите строку "PermitRootLogin yes" и замените её на "PermitRootLogin no", 
 
+
 При необходимости измените "PasswordAuthentication yes" на "PasswordAuthentication no"
 
 # Перезапуск службы SSH для применения изменений
@@ -102,7 +103,7 @@ Port 22102
 
 https://github.com/MHSanaei/3x-ui
 
-bash <(curl -Ls https://raw.githubusercontent.com/mhsanaei/3x-ui/master/install.sh)
+    bash <(curl -Ls https://raw.githubusercontent.com/mhsanaei/3x-ui/master/install.sh)
 
 # Устоновка SSL
     x-ui
@@ -113,10 +114,15 @@ bash <(curl -Ls https://raw.githubusercontent.com/mhsanaei/3x-ui/master/install.
 
 # Подписка
 Включить подписку
+
 Порт подписки 20196
+
 Корневой путь URL-адреса подписки /tv/
+
 Путь к файлу открытого ключа сертификата подписки /root/cert/p.kirnetwiz.top/fullchain.pem
+
 Путь к файлу закрытого ключа сертификата подписки /root/cert/p.kirnetwiz.top/privkey.pem
+
 Интервалы обновления подписки 1
 
 # Telegram-бот: Удалённое управление сервером, подключениями и мониторингом.
@@ -182,7 +188,7 @@ bash <(curl -Ls https://raw.githubusercontent.com/mhsanaei/3x-ui/master/install.
 
 # IP.Check.Place: Проверка репутации IP-адреса. Предварительно можно понять "чистоту" IP и пройтись по публичным спискам об IP.
 
-bash <(curl -Ls IP.Check.Place) -l en
+    bash <(curl -Ls IP.Check.Place) -l en
 
 My Traceroute (MTR): Утилита для диагностики сети. Утилита позволяет отследить маршрут пакетов и выявить проблемные узлы.
 
@@ -194,6 +200,7 @@ My Traceroute (MTR): Утилита для диагностики сети. Ут
 Проверить работу на сервере, вводим:
         
     sysctl net.ipv4.tcp_congestion_control
+
 Работает - bbr нет - cubik
 
 Включить
