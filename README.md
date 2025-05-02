@@ -30,18 +30,13 @@
 # Открытие конфигурационного файла SSH для редактирования
     nano /etc/ssh/sshd_config
 
-
-# Заменить порт
+Заменить порт
 
 Port 22102
 
-    sudo ufw allow 22102/tcp
+Найдите строку "PermitRootLogin yes" и замените её на "PermitRootLogin no", 
 
-# Закрыть порт
-
-    sudo ufw deny 22/tcp
-
-# (Найдите строку "PermitRootLogin yes" и замените её на "PermitRootLogin no"), (При необходимости измените "PasswordAuthentication yes" на "PasswordAuthentication no")
+При необходимости измените "PasswordAuthentication yes" на "PasswordAuthentication no"
 
 # Перезапуск службы SSH для применения изменений
     systemctl restart ssh
@@ -49,12 +44,11 @@ Port 22102
 # Установка UFW
     sudo apt update
     sudo apt install ufw
-    sudo ufw allow ssh
-    sudo ufw allow <ваш_порт>/tcp
-
-sudo nano /etc/ufw/before.rules
+    sudo ufw allow 22102/tcp #Открыть порт
 
 # Блокировка ICMP-запросов для предотвращения двустороннего пинга
+    sudo nano /etc/ufw/before.rules
+    
     # ok icmp codes for INPUT
     -A ufw-before-input -p icmp --icmp-type destination-unreachable -j DROP
     -A ufw-before-input -p icmp --icmp-type time-exceeded -j DROP
@@ -70,6 +64,8 @@ sudo nano /etc/ufw/before.rules
 
     sudo ufw enable
 
+    reboot
+
 # Проверить статус UFW
     sudo ufw status verbose
 
@@ -78,15 +74,10 @@ sudo nano /etc/ufw/before.rules
 </details>
 
 
+# Насторойка 3x-ui с самоподписанным SSL сертификатом
 
-
-
-
-
-
-
-
-
+<details>
+<summary>Показать/скрыть</summary>
 # Скачиваем скрипт
     wget https://raw.githubusercontent.com/kir460/3x/main/ui.sh
 
@@ -95,3 +86,4 @@ sudo nano /etc/ufw/before.rules
 
 # Запуск скрипта от имени суперпользователя
     sudo ./ui.sh
+</details>
