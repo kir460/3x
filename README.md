@@ -1,11 +1,4 @@
-# Скачиваем скрипт
-    wget https://raw.githubusercontent.com/kir460/3x/main/ui.sh
-
-# Предоставление прав на выполнение скрипта
-    chmod +x ui.sh
-
-# Запуск скрипта от имени суперпользователя
-    sudo ./ui.sh
+#Безопасность
 
 # Создание нового пользователя
     adduser x
@@ -79,3 +72,23 @@ sudo nano /etc/ufw/before.rules
 
 #  Вход под root:
     su root(с паролем root), sudo -i (с парлем user)
+
+
+
+
+
+
+
+
+
+
+
+
+# Скачиваем скрипт
+    wget https://raw.githubusercontent.com/kir460/3x/main/ui.sh
+
+# Предоставление прав на выполнение скрипта
+    chmod +x ui.sh
+
+# Запуск скрипта от имени суперпользователя
+    sudo ./ui.sh
