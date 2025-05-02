@@ -82,20 +82,6 @@ Port 22102
 </details>
 
 
-# Насторойка 3x-ui с самоподписанным SSL сертификатом
-
-<details>
-<summary>Показать/скрыть</summary>
-
-# Скачиваем скрипт
-    wget https://raw.githubusercontent.com/kir460/3x/main/ui.sh
-
-# Предоставление прав на выполнение скрипта
-    chmod +x ui.sh
-
-</details>
-
-
 # Насторойка 3x-ui с доменом
 
 <details>
@@ -218,5 +204,20 @@ My Traceroute (MTR): Утилита для диагностики сети. Ут
 
 ![image](https://github.com/user-attachments/assets/a030b9da-7d78-44a4-b54d-ac86e64ab740)
 
+
+</details>
+
+
+
+# Насторойка 3x-ui с самоподписанным SSL сертификатом
+
+<details>
+<summary>Показать/скрыть</summary>
+
+# Скачиваем скрипт
+    wget https://raw.githubusercontent.com/kir460/3x/main/ui.sh
+
+# Предоставление прав на выполнение скрипта
+    chmod +x ui.sh
 
 </details>
