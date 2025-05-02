@@ -92,13 +92,16 @@ Port 22102
 <details>
 <summary>Показать/скрыть</summary>
 
+# Устоновка SSL
+    x-ui
+    18
+    1
+    3.kirnetwiz.top
+    80
+    
 # Обновление
     x-ui
     2
-
-# Восстановление доступа
-    x-ui
-    10
 
 # Подписка
 ![image](https://github.com/user-attachments/assets/5cbe56b6-9496-47c5-aadf-6c09d034117d)
