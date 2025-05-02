@@ -1,76 +1,137 @@
 #!/bin/bash
 
-# Минимальный скрипт для трёх замеров скорости до указанного Speedtest-сервера
-# и вывода средних значений Download, Upload и Ping.
+# ==========================
+# 📌 Проверка зависимостей
+# ==========================
+install_dependency() {
+    local DEP_NAME=$1
+    local INSTALL_CMD=$2
 
-# Проверяем наличие Speedtest CLI и устанавливаем, если нужно
-if ! command -v speedtest &>/dev/null; then
-  echo "Speedtest CLI не найден. Устанавливаю официальную версию..."
-  wget -qO- https://install.speedtest.net/app/cli/ookla-speedtest-1.2.0-linux-x86_64.tgz \
-    | tar xz speedtest
-  chmod +x speedtest
-  sudo mv speedtest /usr/local/bin/
-  echo "✅ Speedtest CLI установлен."
-fi
+    if ! command -v "$DEP_NAME" &> /dev/null; then
+        echo "❌ $DEP_NAME не установлен. Устанавливаю..."
+        eval "$INSTALL_CMD"
+        if ! command -v "$DEP_NAME" &> /dev/null; then
+            echo "❌ Ошибка при установке $DEP_NAME. Завершаем."
+            exit 1
+        fi
+        echo "✅ $DEP_NAME успешно установлен."
+    else
+        echo "✅ $DEP_NAME уже установлен."
+    fi
+}
 
-# Запрашиваем у пользователя ID сервера
-read -p "Введите Server ID для теста: " SERVER_ID
+# =============================
+# 📌 Удаление старого Speedtest
+# =============================
+remove_old_speedtest() {
+    if command -v speedtest-cli &> /dev/null; then
+        echo "🛠️ Удаляем устаревший speedtest-cli..."
+        sudo apt remove --purge speedtest-cli -y
+        sudo apt autoremove -y
+        rm -f /usr/local/bin/speedtest
+        rm -f /usr/bin/speedtest
+    fi
+}
+
+# ==============================
+# 📌 Установка Speedtest CLI
+# ==============================
+install_speedtest() {
+    if ! command -v speedtest &> /dev/null || ! speedtest --version | grep -q "Speedtest by Ookla"; then
+        echo "🛠️ Устанавливаем официальную версию Ookla Speedtest CLI..."
+        wget https://install.speedtest.net/app/cli/ookla-speedtest-1.2.0-linux-x86_64.tgz
+        tar -xvf ookla-speedtest-1.2.0-linux-x86_64.tgz
+        chmod +x speedtest
+        sudo mv speedtest /usr/local/bin/speedtest
+        rm -f ookla-speedtest-1.2.0-linux-x86_64.tgz
+    fi
+
+    # 📌 Подтверждение условий использования
+    echo "✅ Подтверждаем условия использования Speedtest CLI..."
+    echo "YES" | speedtest --accept-license --accept-gdpr > /dev/null 2>&1
+
+    echo "✅ Speedtest установлен и готов к использованию:"
+    speedtest --version
+}
+
+# =============================
+# 📌 Проверка зависимостей
+# =============================
+install_dependency "jq" "sudo apt update && sudo apt install jq -y"
+
+# 📌 Удаляем старую версию и устанавливаем новую
+remove_old_speedtest
+install_speedtest
+
+# ========================
+# 📌 Запрос ID сервера
+# ========================
+read -p "Введите ID сервера для замера: " SERVER_ID
 if [[ -z "$SERVER_ID" ]]; then
-  echo "Ошибка: Server ID не может быть пустым."
-  exit 1
+    echo "❌ ID сервера не может быть пустым. Попробуйте снова."
+    exit 1
 fi
 
-# Переменные для накопления результатов
-TotalDownload=0
-TotalUpload=0
-TotalPing=0
-Count=0
+# ============================
+# 📌 Инициализация переменных
+# ============================
+TOTAL_DOWNLOAD=0
+TOTAL_UPLOAD=0
+TOTAL_PING=0
+NUM_TESTS=3
+SUCCESS_TESTS=0
 
-# Три последовательных замера
-for i in 1 2 3; do
-  echo "=== Тест #$i ==="
-  JSON=$(speedtest -s "$SERVER_ID" --format=json 2>/dev/null)
-  if [[ -z "$JSON" ]]; then
-    echo "⚠️ Сервер $SERVER_ID недоступен или ошибка соединения."
-    continue
-  fi
+# ========================
+# 📌 Три замера скорости
+# ========================
+for i in {1..3}; do
+    echo -e "\n🟦======================= [ Тест #$i ] ======================="
+    OUTPUT=$(speedtest -s "$SERVER_ID" --format=json 2>/dev/null)
 
-  # Выделяем байты/с и миллисекунды из JSON
-  DL=$(echo "$JSON" | grep -Po '"download":\s*\K[0-9]+')
-  UL=$(echo "$JSON" | grep -Po '"upload":\s*\K[0-9]+')
-  P =$(echo "$JSON" | grep -Po '"latency":\s*\K[0-9.]+')
+    if [ -z "$OUTPUT" ]; then
+        echo "❌ Ошибка во время теста #$i. Сервер с ID $SERVER_ID может быть недоступен."
+        continue
+    fi
 
-  if [[ -z "$DL" || -z "$UL" || -z "$P" ]]; then
-    echo "⚠️ Невалидный ответ от сервера, пропускаем."
-    continue
-  fi
+    DOWNLOAD=$(echo "$OUTPUT" | jq -r '.download.bandwidth')
+    UPLOAD=$(echo "$OUTPUT" | jq -r '.upload.bandwidth')
+    PING=$(echo "$OUTPUT" | jq -r '.ping.latency')
 
-  # Конвертируем в Mbps и ms
-  DL_M=$(awk "BEGIN{printf \"%.2f\", $DL/125000}")
-  UL_M=$(awk "BEGIN{printf \"%.2f\", $UL/125000}")
-  P_MS=$(awk "BEGIN{printf \"%.2f\", $P}")
+    if [[ -z "$DOWNLOAD" || -z "$UPLOAD" || -z "$PING" ]]; then
+        echo "❌ Некорректные данные от сервера на тесте #$i. Пропускаем."
+        continue
+    fi
 
-  echo "Download: $DL_M Mbps"
-  echo "Upload:   $UL_M Mbps"
-  echo "Ping:     $P_MS ms"
+    DOWNLOAD_MBPS=$(echo "scale=2; $DOWNLOAD / 125000" | bc)
+    UPLOAD_MBPS=$(echo "scale=2; $UPLOAD / 125000" | bc)
+    PING_MS=$(echo "scale=2; $PING" | bc)
 
-  TotalDownload=$((TotalDownload + DL))
-  TotalUpload=$((TotalUpload + UL))
-  TotalPing=$(awk "BEGIN{print $TotalPing + $P}")
-  Count=$((Count + 1))
+    echo -e "📥 Download: \e[1;32m$DOWNLOAD_MBPS Mbps\e[0m"
+    echo -e "📤 Upload: \e[1;34m$UPLOAD_MBPS Mbps\e[0m"
+    echo -e "📡 Ping: \e[1;33m$PING_MS ms\e[0m"
+
+    TOTAL_DOWNLOAD=$(echo "$TOTAL_DOWNLOAD + $DOWNLOAD" | bc)
+    TOTAL_UPLOAD=$(echo "$TOTAL_UPLOAD + $UPLOAD" | bc)
+    TOTAL_PING=$(echo "$TOTAL_PING + $PING" | bc)
+    SUCCESS_TESTS=$((SUCCESS_TESTS + 1))
 done
 
-# Вывод средних значений
-if (( Count > 0 )); then
-  AVG_DL=$(awk "BEGIN{printf \"%.2f\", $TotalDownload/Count/125000}")
-  AVG_UL=$(awk "BEGIN{printf \"%.2f\", $TotalUpload/Count/125000}")
-  AVG_P =$(awk "BEGIN{printf \"%.2f\", $TotalPing/Count}")
+# ============================
+# 📌 Вывод итогов
+# ============================
+if [[ $SUCCESS_TESTS -gt 0 ]]; then
+    AVG_DOWNLOAD=$(echo "scale=2; $TOTAL_DOWNLOAD / $SUCCESS_TESTS / 125000" | bc)
+    AVG_UPLOAD=$(echo "scale=2; $TOTAL_UPLOAD / $SUCCESS_TESTS / 125000" | bc)
+    AVG_PING=$(echo "scale=2; $TOTAL_PING / $SUCCESS_TESTS" | bc)
 else
-  AVG_DL=0; AVG_UL=0; AVG_P=0
+    AVG_DOWNLOAD=0
+    AVG_UPLOAD=0
+    AVG_PING=0
 fi
 
-echo
-echo "=== Итог ==="
-echo "Средний Download: $AVG_DL Mbps"
-echo "Средний Upload:   $AVG_UL Mbps"
-echo "Средний Ping:     $AVG_P ms"
+echo -e "\n🟩===================== [ ИТОГОВЫЙ РЕЗУЛЬТАТ ] ====================="
+echo -e "📊 Средняя скорость скачивания: \e[1;32m$AVG_DOWNLOAD Mbps\e[0m"
+echo -e "📊 Средняя скорость загрузки: \e[1;34m$AVG_UPLOAD Mbps\e[0m"
+echo -e "📊 Средний Ping: \e[1;33m$AVG_PING ms\e[0m"
+
+exit 0
