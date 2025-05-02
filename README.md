@@ -164,7 +164,7 @@ bash <(curl -Ls https://raw.githubusercontent.com/mhsanaei/3x-ui/master/install.
 
 # Speedtest до конкретного сервера
 
-bash <(curl -s https://raw.githubusercontent.com/kir460/3x/main/sped.sh)
+    bash <(curl -s https://raw.githubusercontent.com/kir460/3x/main/sped.sh)
 
 # Fail2Ban
 
