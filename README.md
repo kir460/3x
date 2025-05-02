@@ -78,6 +78,7 @@ Port 22102
 
 <details>
 <summary>Показать/скрыть</summary>
+
 # Скачиваем скрипт
     wget https://raw.githubusercontent.com/kir460/3x/main/ui.sh
 
