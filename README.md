@@ -1,5 +1,8 @@
 # Безопасность
 
+<details>
+<summary>Показать/скрыть</summary>
+
 # Создание нового пользователя
     adduser x
 
@@ -72,7 +75,7 @@ sudo nano /etc/ufw/before.rules
 
 #  Вход под root:
     su root(с паролем root), sudo -i (с парлем user)
-
+</details>
 
 
 
