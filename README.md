@@ -110,10 +110,6 @@ bash <(curl -Ls https://raw.githubusercontent.com/mhsanaei/3x-ui/master/install.
     1
     domain
     80
-    
-# Обновление
-    x-ui
-    2
 
 # Подписка
 Включить подписку
@@ -122,6 +118,17 @@ bash <(curl -Ls https://raw.githubusercontent.com/mhsanaei/3x-ui/master/install.
 Путь к файлу открытого ключа сертификата подписки /root/cert/p.kirnetwiz.top/fullchain.pem
 Путь к файлу закрытого ключа сертификата подписки /root/cert/p.kirnetwiz.top/privkey.pem
 Интервалы обновления подписки 1
+
+# Telegram-бот: Удалённое управление сервером, подключениями и мониторингом.
+
+Создаём бота
+@BotFather
+
+ПолучАем id
+@userinfobot
+
+![image](https://github.com/user-attachments/assets/612dc1e8-c923-411b-9745-40f5f389794f)
+
 
 # Port hopping
 
@@ -134,9 +141,75 @@ bash <(curl -Ls https://raw.githubusercontent.com/mhsanaei/3x-ui/master/install.
 
 3 Настройка Port Hopping через iptables. 
 
-    sudo iptables -t nat -A PREROUTING -p tcp --dport
-    30000:30100 -j REDIRECT --to-port 443
-    sudo iptables -t nat -A PREROUTING -p udp --dport
-    30000:30100 -j REDIRECT --to-port 443
+    sudo iptables -t nat -A PREROUTING -p tcp --dport 30000:30100 -j REDIRECT --to-port 443
+    sudo iptables -t nat -A PREROUTING -p udp --dport 30000:30100 -j REDIRECT --to-port 443
+
+4 Сохранение правил iptables
+
+    sudo apt install -y iptables-persistent
+    sudo netfilter-persistent save
+    sudo netfilter-persistent reload
+
+5 Проверка применения правил
+
+    sudo iptables -t nat -L -v -n
+
+6 Убедитесь, что порт 443 слушается:
+
+    sudo lsof -i -P -n | grep LISTEN
+
+# Speedtest c сервера
+
+    wget -qO- speedtest.artydev.ru | bash
+
+# Speedtest до конкретного сервера
+
+bash <(curl -s https://raw.githubusercontent.com/kir460/3x/main/sped.sh)
+
+# Fail2Ban
+
+    x-ui
+    20
+    1
+    y
+    enter
+    20
+    4
+
+    Логи
+    20
+    7
+
+# IP.Check.Place: Проверка репутации IP-адреса. Предварительно можно понять "чистоту" IP и пройтись по публичным спискам об IP.
+
+bash <(curl -Ls IP.Check.Place) -l en
+
+My Traceroute (MTR): Утилита для диагностики сети. Утилита позволяет отследить маршрут пакетов и выявить проблемные узлы.
+
+    mtr ya.ru
+    mtr ip-address
+
+# bbr
+
+Проверить работу на сервере, вводим:
+        
+    sysctl net.ipv4.tcp_congestion_control
+Работает - bbr нет - cubik
+
+Включить
+
+    x-ui
+    23
+    1
+    
+# DNS-over-LESS 
+
+    tcp://8.8.8.8
+    tcp://1.1.1.1
+    https://dns.google/dns-query
+    https://cloudflare-dns.com/dns-query
+
+![image](https://github.com/user-attachments/assets/a030b9da-7d78-44a4-b54d-ac86e64ab740)
+
 
 </details>
