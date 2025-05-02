@@ -44,7 +44,13 @@ Port 22102
 # Установка UFW
     sudo apt update
     sudo apt install ufw
-    sudo ufw allow 22102/tcp #Открыть порт
+
+# Открыть порты
+    sudo ufw allow 22102/tcp #ssh
+    sudo ufw allow 443/tcp #https
+    sudo ufw allow 80/tcp #http
+    sudo ufw allow 20196/tcp #subscribe
+    sudo ufw allow 38777/tcp #pannel
 
 # Блокировка ICMP-запросов для предотвращения двустороннего пинга
     sudo nano /etc/ufw/before.rules
@@ -71,6 +77,7 @@ Port 22102
 
 #  Вход под root:
     su root(с паролем root), sudo -i (с парлем user)
+
 </details>
 
 
@@ -84,19 +91,24 @@ Port 22102
 
 # Предоставление прав на выполнение скрипта
     chmod +x ui.sh
+
 </details>
 
 
-# Подробнее
+# Насторойка 3x-ui с доменом
 
 <details>
 <summary>Показать/скрыть</summary>
+
+https://github.com/MHSanaei/3x-ui
+
+bash <(curl -Ls https://raw.githubusercontent.com/mhsanaei/3x-ui/master/install.sh)
 
 # Устоновка SSL
     x-ui
     18
     1
-    3.kirnetwiz.top
+    domain
     80
     
 # Обновление
@@ -104,10 +116,27 @@ Port 22102
     2
 
 # Подписка
-![image](https://github.com/user-attachments/assets/5cbe56b6-9496-47c5-aadf-6c09d034117d)
-![image](https://github.com/user-attachments/assets/29a49e4f-dcc9-40b1-b0df-1776d9ca39ee)
+Включить подписку
+Порт подписки 20196
+Корневой путь URL-адреса подписки /tv/
+Путь к файлу открытого ключа сертификата подписки /root/cert/p.kirnetwiz.top/fullchain.pem
+Путь к файлу закрытого ключа сертификата подписки /root/cert/p.kirnetwiz.top/privkey.pem
+Интервалы обновления подписки 1
 
+# Port hopping
 
+1 Открыть диапозон адресов
 
+    sudo ufw allow 30000:30100/tcp
+    sudo ufw allow 30000:30100/udp
+
+2 Проверить что xRay работает на порту 443
+
+3 Настройка Port Hopping через iptables. 
+
+    sudo iptables -t nat -A PREROUTING -p tcp --dport
+    30000:30100 -j REDIRECT --to-port 443
+    sudo iptables -t nat -A PREROUTING -p udp --dport
+    30000:30100 -j REDIRECT --to-port 443
 
 </details>
