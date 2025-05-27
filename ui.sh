@@ -12,7 +12,7 @@ fi
 
 # Установка 3X-UI
 if ! command -v x-ui &> /dev/null; then
-  bash <(curl -Ls https://raw.githubusercontent.com/MHSanaei/3x-ui/master/install.sh)
+  bash <(curl -Ls https://raw.githubusercontent.com/MHSanaei/3x-ui/refs/tags/v2.6.0/install.sh)
   if [ $? -ne 0 ]; then
     exit 1
   fi
