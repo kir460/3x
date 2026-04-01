@@ -2,7 +2,9 @@
 
 <details>
 <summary>Показать/скрыть</summary>
-
+# Поменять пароль
+    sudo passwd root
+    
 # Создание нового пользователя
     adduser x
 
