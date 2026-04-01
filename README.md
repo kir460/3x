@@ -31,7 +31,7 @@
     exit
 
 # Открытие конфигурационного файла SSH для редактирования
-    nano /etc/ssh/sshd_config
+   sudo nano /etc/ssh/sshd_config
 
 Заменить порт
 
@@ -43,7 +43,7 @@ Port 22102
 При необходимости измените "PasswordAuthentication yes" на "PasswordAuthentication no"
 
 # Перезапуск службы SSH для применения изменений
-    systemctl restart ssh
+    sudo systemctl restart ssh
 
 # Установка UFW
     sudo apt update
