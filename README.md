@@ -31,7 +31,8 @@
     exit
 
 # Открытие конфигурационного файла SSH для редактирования
-   sudo nano /etc/ssh/sshd_config
+   
+    sudo nano /etc/ssh/sshd_config
 
 Заменить порт
 
@@ -55,6 +56,10 @@ Port 22102
     sudo ufw allow 80/tcp #http
     sudo ufw allow 20196/tcp #subscribe
     sudo ufw allow 38777/tcp #pannel
+
+# Включить, выключить firewall
+    sudo ufw disable
+    sudo ufw enable
 
 # Блокировка ICMP-запросов для предотвращения двустороннего пинга
     sudo nano /etc/ufw/before.rules
