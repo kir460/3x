@@ -101,6 +101,9 @@ https://github.com/MHSanaei/3x-ui
     domain
     80
 
+# Создаём VLESS соединение. 
+<img width="1366" height="642" alt="image" src="https://github.com/user-attachments/assets/4222409d-4c02-4f6f-a728-b5a5d6678dfe" />
+
 # Подписка
 Включить подписку
 
