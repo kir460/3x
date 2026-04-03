@@ -1,8 +1,5 @@
 # Безопасность
 
-<details>
-<summary>Показать/скрыть</summary>
-
 #  Поменять пароль
     sudo passwd root
     
@@ -87,13 +84,11 @@ Port 22102
 #  Вход под root:
     su root(с паролем root), sudo -i (с парлем user)
 
-</details>
+
 
 
 # Насторойка 3x-ui с доменом
 
-<details>
-<summary>Показать/скрыть</summary>
 
 https://github.com/MHSanaei/3x-ui
 
