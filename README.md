@@ -3,10 +3,15 @@
 Диспетчер задач htop
 
 sudo nano /etc/hostname
+
 sudo nano /etc/hosts
+
 hostnamectl
+
 sudo hostnamectl set-hostname myserver
+
 hostname
+
 sudo reboot
 
 #  Поменять пароль
