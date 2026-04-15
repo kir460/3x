@@ -68,6 +68,10 @@ Port 22102
     sudo ufw allow 20196/tcp #subscribe
     sudo ufw allow 38777/tcp #pannel
 
+Удалить
+sudo ufw delete allow 22102/tcp
+Удалить по номеру: sudo ufw delete 1
+
 # Выключить, включить, перезагрузить firewall
     sudo ufw disable
     sudo ufw enable
