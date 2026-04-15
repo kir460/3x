@@ -68,10 +68,6 @@ Port 22102
     sudo ufw allow 20196/tcp #subscribe
     sudo ufw allow 38777/tcp #pannel
 
-Удалить
-sudo ufw delete allow 22102/tcp
-Удалить по номеру: sudo ufw delete 1
-
 # Выключить, включить, перезагрузить firewall
     sudo ufw disable
     sudo ufw enable
@@ -93,23 +89,22 @@ sudo ufw delete allow 22102/tcp
     -A ufw-before-forward -p icmp --icmp-type parameter-problem -j DROP
     -A ufw-before-forward -p icmp --icmp-type echo-request -j DROP
 
-    sudo ufw enable
-
-    reboot
+     reboot
 
 # Проверить статус UFW
     sudo ufw status verbose
+# Чтобы увидеть все правила UFW: 
+    sudo ufw show added
 
 # Чтобы убедиться, что UFW автоматически запускается при старте системы:
     sudo systemctl is-enabled ufw 
 Чтобы включить автозапуск UFW: 
     sudo systemctl enable ufw 
 
-# Чтобы увидеть все правила UFW: 
-    sudo ufw show added
-
-#  Закрыть старый порт
+#  Закрыть, удалить старый порт
     sudo ufw deny 22/tcp 
+    sudo ufw delete allow 22102/tcp
+    sudo ufw delete 1
 
 #  Вход под root:
     su root(с паролем root), sudo -i (с парлем user)
